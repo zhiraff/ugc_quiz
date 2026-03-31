@@ -92,7 +92,7 @@ class QuestionAnswer(models.Model):
                              verbose_name="Пользователь", default=None)
     answer = models.TextField(verbose_name='Текст ответа', blank=True, null=True)
     asnwer_option_id = models.ForeignKey(QuestionOption, on_delete=models.SET_NULL, blank=True, null=True,
-                             verbose_name="Пользователь", default=None)
+                             verbose_name="Выбранный ответ", default=None)
     
     def __str__(self):
         return f"{self.question_id.name} : {self.resp_user.username} : {self.answer[:50]} : {self.asnwer_option_id.name if self.asnwer_option_id else ''}"
