@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Вход — система опросов{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1 class="card-title">Вход в аккаунт</h1>
+  <p class="card-subtitle">
+    Введите логин и пароль.
+  </p>
+
+  <form method="post" class="main-form" id="login-form" style="flex-direction: column; align-items: stretch;">
+    {% csrf_token %}
+    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom: 12px;">
+      <input
+        type="text"
+        name="username"
+        class="url-input"
+        placeholder="Имя пользователя"
+        required
+      >
+      <input
+        type="password"
+        name="password"
+        class="url-input"
+        placeholder="Пароль"
+        required
+      >
+    </div>
+    
+    <button type="submit" class="btn-primary" style="align-self:flex-start;">
+      Войти
+    </button>
+  </form>
+
+  <hr class="section-divider">
+
+  <div>
+    <p class="upload-section-text" style="margin-bottom:8px;">
+      Нет аккаунта?
+    </p>
+    <a href="{% url 'accounts:register' %}" class="btn-secondary" style="text-decoration:none;">
+      Регистрация
+    </a>
+    <a href="{% url 'quiz:index' %}" class="btn-secondary" style="text-decoration:none;">
+      На главную
+    </a>
+  </div>
+</div>
+{% endblock %}
+

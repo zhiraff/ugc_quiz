@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ block.super }} :: главная{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1 class="card-title">Список доступных опросов:</h1>
+  <p class="card-subtitle">
+    Для начала/продолжения прохождения нажмите кнопку "далее" 
+  </p>
+
+   <table class="table table-light table-hover table-striped">
+         <thead>
+          <tr>
+            <th scope="col">Название</th>
+            <th scope="col"> </th>
+          </tr>
+         </thead>
+        <tbody>
+        {% for item in quiz_list %}
+          <tr>
+                <td>{{item}}</td>
+                <td><button type="submit" class="btn-primary">далее</button></td>
+          </tr>
+        {% endfor %}
+        
+        </tbody>
+    </table>
+
+
+  <hr class="section-divider">
+
+</div>
+{% endblock %}
+
+

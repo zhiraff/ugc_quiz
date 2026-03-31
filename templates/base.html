@@ -1,0 +1,337 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Сервис проведения опросов{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --bg-color: #f5f7fb;
+      --card-bg: #ffffff;
+      --text-color: #111827;
+      --muted-color: #6b7280;
+      --border-color: #e5e7eb;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --secondary: #4b5563;
+      --secondary-hover: #374151;
+      --shadow-soft: 0 20px 40px rgba(15, 23, 42, 0.12);
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #e5edff 0, #f5f7fb 42%, #eef2ff 100%);
+      color: var(--text-color);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 720px;
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+    }
+
+    .page-content {
+      flex: 1;
+    }
+
+    .page-header {
+      margin-bottom: 12px;
+    }
+
+    .page-intro-text {
+      font-size: 13px;
+      color: var(--muted-color);
+    }
+
+    .header-link {
+      font-size: 14px;
+      color: var(--secondary);
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: var(--radius-full);
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .header-link:hover {
+      background-color: rgba(148, 163, 184, 0.16);
+      color: var(--secondary-hover);
+    }
+
+    .header-button {
+      font-size: 14px;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 6px 14px;
+      cursor: pointer;
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+    }
+
+    .header-button:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      padding: 28px 28px 24px;
+    }
+
+    @media (min-width: 640px) {
+      .card {
+        padding: 32px 40px 28px;
+      }
+    }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+
+    .card-subtitle {
+      margin: 0 0 18px;
+      font-size: 15px;
+      color: var(--muted-color);
+      line-height: 1.5;
+    }
+
+    .main-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .main-form {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    .url-input {
+      flex: 1;
+      min-width: 0;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-color);
+      padding: 10px 16px;
+      font-size: 15px;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .url-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      border: none;
+      cursor: pointer;
+      border-radius: var(--radius-full);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 10px 22px;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.45);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.55);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: var(--secondary);
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+      color: var(--secondary-hover);
+    }
+
+    .section-divider {
+      margin: 28px 0 20px;
+      border: 0;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .upload-section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 6px;
+    }
+
+    .upload-section-text {
+      margin: 0 0 16px;
+      font-size: 14px;
+      color: var(--muted-color);
+    }
+
+    .upload-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .upload-form {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    .file-input {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      border-radius: var(--radius-full);
+      border: 1px dashed var(--border-color);
+      padding: 8px 14px;
+      background: #f9fafb;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--secondary);
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-input input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .file-input-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .page-footer {
+      width: 100%;
+      font-size: 12px;
+      color: var(--muted-color);
+      padding: 12px 24px 16px;
+      box-sizing: border-box;
+    }
+
+    .footer-container {
+      margin: 0 auto;
+    }
+
+    .footer-divider {
+      border: 0;
+      border-top: 1px solid rgba(148, 163, 184, 0.35);
+      margin: 0 0 10px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-left {
+      font-size: 13px;
+    }
+
+  </style>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <div class="page">
+    <header class="page-header">
+      <div class="page-intro-text">Сервис проведения опросов </div>
+    </header>
+
+    <main class="page-content">
+      {% block content %}{% endblock %}
+    </main>
+</div>
+    <footer class="page-footer">
+      <div class="footer-container">
+      <hr class="footer-divider">
+      <div class="footer-inner">
+        <div class="footer-left">
+          Опросы UGC &copy; 2026 timapigolev@gmail.com
+        </div>
+        <div class="header-right">
+          
+          <a
+            href="/swagger/"
+            class="header-link"
+          >
+            API
+          </a>
+          <!-- <a href="{% url 'admin:index' %}" class="header-button"> -->
+            {% if user.is_authenticated %}
+            <a href="{% url 'admin:index' %}" class="header-button">Панель управления {{ user.username }}</a> | 
+            <form method="post" action="{% url 'accounts:logout' %}"  style="display: inline;">
+              {% csrf_token %}
+            <button type="submit" class="header-button">Выйти</button>
+            </form>
+            {% else %}
+            <a href="{% url 'accounts:login' %}" class="header-button">вход/регистрация</a>
+            
+            {% endif %}
+            <!-- вход/регистрация -->
+          <!-- </a> -->
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

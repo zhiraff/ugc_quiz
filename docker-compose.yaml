@@ -1,0 +1,50 @@
+version: '3.3'
+services:
+  ugc-backend:
+    container_name: ugc-backend
+    network_mode: bridge
+    restart: always
+    links:
+      - ugc-database
+    image: ugc:latest
+    build: .
+    env_file:
+      - .env-sample
+    depends_on:
+      - ugc-database
+    environment:
+      - DB_HOST=ugc-database
+    command: bash -c "
+              python manage.py check
+              && python manage.py makemigrations
+              && python manage.py migrate
+              && gunicorn -c gunicorn.conf.py core.wsgi:application
+              "
+    ports:
+      - '8000:8000'
+    expose:
+      - 8000
+    volumes:
+      - media_data:/app/media
+      - static_data:/app/static
+# add migration volumes in prod
+#       - migrations_data/account:/app/account/migrations
+#       - migrations_data/ugc:/app/ugc/migrations
+#       - migrations_data/blacklist:/app/blacklist/migrations
+
+  ugc-database:
+    container_name: ugc-database
+    image: postgres:16.4
+    restart: always
+    network_mode: bridge
+    env_file:
+      - .env_db-sample
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  media_data:
+  static_data:
+  db_data:
